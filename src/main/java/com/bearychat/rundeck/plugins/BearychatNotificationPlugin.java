@@ -23,9 +23,9 @@ import freemarker.template.TemplateException;
 @PluginDescription(title="Bearychat Incoming WebHook", description="Sends Rundeck Notifications to Bearychat")
 public class BearychatNotificationPlugin implements NotificationPlugin {
 
-    private static final String BEARYCHAT_MESSAGE_COLOR_GREEN = "good";
-    private static final String BEARYCHAT_MESSAGE_COLOR_YELLOW = "warning";
-    private static final String BEARYCHAT_MESSAGE_COLOR_RED = "danger";
+    private static final String BEARYCHAT_MESSAGE_COLOR_GREEN = "#D2F3D8";
+    private static final String BEARYCHAT_MESSAGE_COLOR_YELLOW = "#FFEFAA";
+    private static final String BEARYCHAT_MESSAGE_COLOR_RED = "#FFB39A";
 
     private static final String BEARYCHAT_MESSAGE_FROM_NAME = "Rundeck";
     private static final String BEARYCHAT_MESSAGE_TEMPLATE = "bearychat-incoming-message.ftl";
@@ -79,7 +79,7 @@ public class BearychatNotificationPlugin implements NotificationPlugin {
         String bearychatResponse = invokeBearychatAPIMethod(webhook_url, message);
         String ms = "payload=" + URLEncoder.encode(message);
 
-        if ("[{\"code\":0,\"result\":null}]".equals(bearychatResponse)) {
+        if ("{\"code\":0,\"result\":null}".equals(bearychatResponse)) {
             return true;
         } else {
             throw new BearychatNotificationPluginException("Unknown status returned from Bearychat API: [" + bearychatResponse + "]." + "\n" + ms);
