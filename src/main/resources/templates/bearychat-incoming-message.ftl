@@ -5,19 +5,22 @@
 <#else>
     <#assign jobName="${executionData.job.name}">
 </#if>
-<#assign message="[${jobName}](${executionData.job.href}) 第 [#${executionData.id}](${executionData.href}) 次执行">
+<#assign message="[${jobName}](${executionData.job.href}) [执行 #${executionData.id}](${executionData.href})">
 <#if trigger == "start">
     <#assign state="任务开始">
+    <#assign attachmentText="任务名字: [${jobName}](${executionData.job.href})\r\n项目名字: ${executionData.project}\r\n执行状态: ${state}\r\n执行标识: [#${executionData.id}](${executionData.href})">
 <#elseif trigger == "failure">
     <#assign state="任务失败">
+    <#assign attachmentText="任务名字: [${jobName}](${executionData.job.href})\r\n项目名字: ${executionData.project}\r\n执行状态: ${state}\r\n执行标识: [#${executionData.id}](${executionData.href})\r\n失败节点: ${executionData.failedNodeListString}">
 <#else>
     <#assign state="任务完成">
+    <#assign attachmentText="任务名字: [${jobName}](${executionData.job.href})\r\n项目名字: ${executionData.project}\r\n执行状态: ${state}\r\n执行标识: [#${executionData.id}](${executionData.href})">
 </#if>
 
 {
     "text": "${state}: ${message}",
     "attachments": [{
-        "text": "attachment_text",
+        "text": "${attachmentText}",
         "color": "${color}"}],
-    "notification": "${state}: ${jobName} 第 #${executionData.id} 次执行"
+    "notification": "${state}: ${jobName} 执行 #${executionData.id}"
 }
