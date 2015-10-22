@@ -18,5 +18,6 @@
     "text": "${state}: ${message}",
     "attachments": [{
         "text": "attachment_text",
-        "color": "${color}"}]
+        "color": "${color}"}],
+    "notification": "${state}: ${jobName} 第 #${executionData.id} 次执行"
 }
