@@ -1,14 +1,14 @@
 package com.bearychat.rundeck.plugins;
 
 
-public class BearychatNotificationPluginException extends RuntimeException {
+public class BearyChatNotificationPluginException extends RuntimeException {
 
     /**
      * Constructor.
      *
      * @param message error message
      */
-    public BearychatNotificationPluginException(String message) {
+    public BearyChatNotificationPluginException(String message) {
         super(message);
     }
 
@@ -18,7 +18,7 @@ public class BearychatNotificationPluginException extends RuntimeException {
      * @param message error message
      * @param cause exception cause
      */
-    public BearychatNotificationPluginException(String message, Throwable cause) {
+    public BearyChatNotificationPluginException(String message, Throwable cause) {
         super(message, cause);
     }
 

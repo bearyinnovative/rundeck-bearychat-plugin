@@ -19,9 +19,9 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
-@Plugin(service= "Notification", name="BearychatNotification")
-@PluginDescription(title="Bearychat Rundeck WebHook", description="Sends Rundeck Notifications to Bearychat")
-public class BearychatNotificationPlugin implements NotificationPlugin {
+@Plugin(service= "Notification", name="BearyChatNotification")
+@PluginDescription(title="BearyChat Rundeck WebHook", description="Sends Rundeck Notifications to BearyChat")
+public class BearyChatNotificationPlugin implements NotificationPlugin {
 
     private static final String BEARYCHAT_MESSAGE_COLOR_GREEN = "#D2F3D8";
     private static final String BEARYCHAT_MESSAGE_COLOR_YELLOW = "#FFEFAA";
@@ -34,35 +34,35 @@ public class BearychatNotificationPlugin implements NotificationPlugin {
     private static final String TRIGGER_SUCCESS = "success";
     private static final String TRIGGER_FAILURE = "failure";
 
-    private static final Map<String, BearychatNotificationData> TRIGGER_NOTIFICATION_DATA = new HashMap<String, BearychatNotificationData>();
+    private static final Map<String, BearyChatNotificationData> TRIGGER_NOTIFICATION_DATA = new HashMap<String, BearyChatNotificationData>();
 
     private static final Configuration FREEMARKER_CFG = new Configuration();
 
-    @PluginProperty(title = "WebHook URL", description = "Bearychat Rundeck WebHook URL", required = true)
+    @PluginProperty(title = "WebHook URL", description = "BearyChat Rundeck WebHook URL", required = true)
     private String webhook_url;
 
     /**
-     * Sends a message to a Bearychat room when a job notification event is raised by Rundeck.
+     * Sends a message to a BearyChat room when a job notification event is raised by Rundeck.
      *
      * @param trigger name of job notification event causing notification
      * @param executionData job execution data
      * @param config plugin configuration
-     * @throws BearychatNotificationPluginException when any error occurs sending the Bearychat message
-     * @return true, if the Bearychat API response indicates a message was successfully delivered to a chat room
+     * @throws BearyChatNotificationPluginException when any error occurs sending the BearyChat message
+     * @return true, if the BearyChat API response indicates a message was successfully delivered to a chat room
      */
     public boolean postNotification(String trigger, Map executionData, Map config) {
 
         String ACTUAL_BEARYCHAT_TEMPLATE;
 
-        ClassTemplateLoader builtInTemplate = new ClassTemplateLoader(BearychatNotificationPlugin.class, "/templates");
+        ClassTemplateLoader builtInTemplate = new ClassTemplateLoader(BearyChatNotificationPlugin.class, "/templates");
         TemplateLoader[] loaders = new TemplateLoader[]{builtInTemplate};
         MultiTemplateLoader mtl = new MultiTemplateLoader(loaders);
         FREEMARKER_CFG.setTemplateLoader(mtl);
         ACTUAL_BEARYCHAT_TEMPLATE = BEARYCHAT_MESSAGE_TEMPLATE;
 
-        TRIGGER_NOTIFICATION_DATA.put(TRIGGER_START, new BearychatNotificationData(ACTUAL_BEARYCHAT_TEMPLATE, BEARYCHAT_MESSAGE_COLOR_YELLOW));
-        TRIGGER_NOTIFICATION_DATA.put(TRIGGER_SUCCESS, new BearychatNotificationData(ACTUAL_BEARYCHAT_TEMPLATE, BEARYCHAT_MESSAGE_COLOR_GREEN));
-        TRIGGER_NOTIFICATION_DATA.put(TRIGGER_FAILURE, new BearychatNotificationData(ACTUAL_BEARYCHAT_TEMPLATE, BEARYCHAT_MESSAGE_COLOR_RED));
+        TRIGGER_NOTIFICATION_DATA.put(TRIGGER_START, new BearyChatNotificationData(ACTUAL_BEARYCHAT_TEMPLATE, BEARYCHAT_MESSAGE_COLOR_YELLOW));
+        TRIGGER_NOTIFICATION_DATA.put(TRIGGER_SUCCESS, new BearyChatNotificationData(ACTUAL_BEARYCHAT_TEMPLATE, BEARYCHAT_MESSAGE_COLOR_GREEN));
+        TRIGGER_NOTIFICATION_DATA.put(TRIGGER_FAILURE, new BearyChatNotificationData(ACTUAL_BEARYCHAT_TEMPLATE, BEARYCHAT_MESSAGE_COLOR_RED));
 
         try {
             FREEMARKER_CFG.setSetting(Configuration.CACHE_STORAGE_KEY, "strong:20, soft:250");
@@ -76,13 +76,13 @@ public class BearychatNotificationPlugin implements NotificationPlugin {
         }
 
         String message = generateMessage(trigger, executionData, config);
-        String bearychatResponse = invokeBearychatAPIMethod(webhook_url, message);
+        String bearychatResponse = invokeBearyChatAPIMethod(webhook_url, message);
         String ms = "payload=" + URLEncoder.encode(message);
 
         if ("{\"code\":0,\"result\":null}".equals(bearychatResponse)) {
             return true;
         } else {
-            throw new BearychatNotificationPluginException("Unknown status returned from Bearychat API: [" + bearychatResponse + "]." + "\n" + ms);
+            throw new BearyChatNotificationPluginException("Unknown status returned from BearyChat API: [" + bearychatResponse + "]." + "\n" + ms);
         }
     }
 
@@ -103,9 +103,9 @@ public class BearychatNotificationPlugin implements NotificationPlugin {
             template.process(model,sw);
 
         } catch (IOException ioEx) {
-            throw new BearychatNotificationPluginException("Error loading Bearychat notification message template: [" + ioEx.getMessage() + "].", ioEx);
+            throw new BearyChatNotificationPluginException("Error loading BearyChat notification message template: [" + ioEx.getMessage() + "].", ioEx);
         } catch (TemplateException templateEx) {
-            throw new BearychatNotificationPluginException("Error merging Bearychat notification message template: [" + templateEx.getMessage() + "].", templateEx);
+            throw new BearyChatNotificationPluginException("Error merging BearyChat notification message template: [" + templateEx.getMessage() + "].", templateEx);
         }
 
         return sw.toString();
@@ -115,11 +115,11 @@ public class BearychatNotificationPlugin implements NotificationPlugin {
         try {
             return URLEncoder.encode(s, "UTF-8");
         } catch (UnsupportedEncodingException unsupportedEncodingException) {
-            throw new BearychatNotificationPluginException("URL encoding error: [" + unsupportedEncodingException.getMessage() + "].", unsupportedEncodingException);
+            throw new BearyChatNotificationPluginException("URL encoding error: [" + unsupportedEncodingException.getMessage() + "].", unsupportedEncodingException);
         }
     }
 
-    private String invokeBearychatAPIMethod(String webhook_url, String message) {
+    private String invokeBearyChatAPIMethod(String webhook_url, String message) {
         URL requestUrl = toURL(webhook_url);
 
         HttpURLConnection connection = null;
@@ -129,7 +129,7 @@ public class BearychatNotificationPlugin implements NotificationPlugin {
             connection = openConnection(requestUrl);
             putRequestStream(connection, body);
             responseStream = getResponseStream(connection);
-            return getBearychatResponse(responseStream);
+            return getBearyChatResponse(responseStream);
 
         } finally {
             closeQuietly(responseStream);
@@ -143,7 +143,7 @@ public class BearychatNotificationPlugin implements NotificationPlugin {
         try {
             return new URL(url);
         } catch (MalformedURLException malformedURLEx) {
-            throw new BearychatNotificationPluginException("Bearychat API URL is malformed: [" + malformedURLEx.getMessage() + "].", malformedURLEx);
+            throw new BearyChatNotificationPluginException("BearyChat API URL is malformed: [" + malformedURLEx.getMessage() + "].", malformedURLEx);
         }
     }
 
@@ -151,7 +151,7 @@ public class BearychatNotificationPlugin implements NotificationPlugin {
         try {
             return (HttpURLConnection) requestUrl.openConnection();
         } catch (IOException ioEx) {
-            throw new BearychatNotificationPluginException("Error opening connection to Bearychat URL: [" + ioEx.getMessage() + "].", ioEx);
+            throw new BearyChatNotificationPluginException("Error opening connection to BearyChat URL: [" + ioEx.getMessage() + "].", ioEx);
         }
     }
 
@@ -167,7 +167,7 @@ public class BearychatNotificationPlugin implements NotificationPlugin {
             wr.flush();
             wr.close();
         } catch (IOException ioEx) {
-            throw new BearychatNotificationPluginException("Error putting data to Bearychat URL: [" + ioEx.getMessage() + "].", ioEx);
+            throw new BearyChatNotificationPluginException("Error putting data to BearyChat URL: [" + ioEx.getMessage() + "].", ioEx);
         }
     }
 
@@ -185,15 +185,15 @@ public class BearychatNotificationPlugin implements NotificationPlugin {
         try {
             return connection.getResponseCode();
         } catch (IOException ioEx) {
-            throw new BearychatNotificationPluginException("Failed to obtain HTTP response: [" + ioEx.getMessage() + "].", ioEx);
+            throw new BearyChatNotificationPluginException("Failed to obtain HTTP response: [" + ioEx.getMessage() + "].", ioEx);
         }
     }
 
-    private String getBearychatResponse(InputStream responseStream) {
+    private String getBearyChatResponse(InputStream responseStream) {
         try {
             return new Scanner(responseStream,"UTF-8").useDelimiter("\\A").next();
         } catch (Exception ioEx) {
-            throw new BearychatNotificationPluginException("Error reading Bearychat API JSON response: [" + ioEx.getMessage() + "].", ioEx);
+            throw new BearyChatNotificationPluginException("Error reading BearyChat API JSON response: [" + ioEx.getMessage() + "].", ioEx);
         }
     }
 
@@ -207,10 +207,10 @@ public class BearychatNotificationPlugin implements NotificationPlugin {
         }
     }
 
-    private static class BearychatNotificationData {
+    private static class BearyChatNotificationData {
         private String template;
         private String color;
-        public BearychatNotificationData(String template, String color) {
+        public BearyChatNotificationData(String template, String color) {
             this.color = color;
             this.template = template;
         }

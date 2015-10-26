@@ -1,6 +1,6 @@
 apply plugin: 'java'
 sourceCompatibility = 1.6
-project.version = 0.2
+project.version = 0.3
 defaultTasks 'clean', 'build'
 
 configurations{
@@ -35,7 +35,7 @@ jar {
         attributes 'Rundeck-Plugin-Version': '1.1', 'Rundeck-Plugin-Archive': 'true','Rundeck-Plugin-File-Version': "${project.version}"
         //create space-separated list of pluginLibs
         def libList = configurations.pluginLibs.collect{'lib/'+it.name}.join(' ')
-        attributes 'Rundeck-Plugin-Classnames': 'com.bearychat.rundeck.plugins.BearychatNotificationPlugin', 'Rundeck-Plugin-Libs': "${libList}"
+        attributes 'Rundeck-Plugin-Classnames': 'com.bearychat.rundeck.plugins.BearyChatNotificationPlugin', 'Rundeck-Plugin-Libs': "${libList}"
     }
 }
 
