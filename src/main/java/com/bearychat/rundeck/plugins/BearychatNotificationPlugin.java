@@ -20,7 +20,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
 @Plugin(service= "Notification", name="BearychatNotification")
-@PluginDescription(title="Bearychat Incoming WebHook", description="Sends Rundeck Notifications to Bearychat")
+@PluginDescription(title="Bearychat Rundeck WebHook", description="Sends Rundeck Notifications to Bearychat")
 public class BearychatNotificationPlugin implements NotificationPlugin {
 
     private static final String BEARYCHAT_MESSAGE_COLOR_GREEN = "#D2F3D8";
@@ -28,7 +28,7 @@ public class BearychatNotificationPlugin implements NotificationPlugin {
     private static final String BEARYCHAT_MESSAGE_COLOR_RED = "#FFB39A";
 
     private static final String BEARYCHAT_MESSAGE_FROM_NAME = "Rundeck";
-    private static final String BEARYCHAT_MESSAGE_TEMPLATE = "bearychat-incoming-message.ftl";
+    private static final String BEARYCHAT_MESSAGE_TEMPLATE = "bearychat-rundeck-message.ftl";
 
     private static final String TRIGGER_START = "start";
     private static final String TRIGGER_SUCCESS = "success";
@@ -38,7 +38,7 @@ public class BearychatNotificationPlugin implements NotificationPlugin {
 
     private static final Configuration FREEMARKER_CFG = new Configuration();
 
-    @PluginProperty(title = "WebHook URL", description = "Bearychat Incoming WebHook URL", required = true)
+    @PluginProperty(title = "WebHook URL", description = "Bearychat Rundeck WebHook URL", required = true)
     private String webhook_url;
 
     /**
