@@ -1,6 +1,6 @@
-## Rundeck-Bearychat-plugin
+## Rundeck-BearyChat-plugin
 
-Sends Rundeck notification messages to a Bearychat channel. This plugin is based on [rundeck-slack-plugin](https://github.com/higanworks/rundeck-slack-incoming-webhook-plugin).
+Sends Rundeck notification messages to a BearyChat channel. This plugin is based on [rundeck-slack-plugin](https://github.com/higanworks/rundeck-slack-incoming-webhook-plugin).
 
 ## Installation Instructions
 
@@ -22,9 +22,9 @@ See the [Included Plugins | Rundeck Documentation](http://rundeck.org/docs/plugi
 
 The only required configuration settings are:
 
-- `WebHook URL`: Bearychat rundeck-robot webhook url
+- `WebHook URL`: BearyChat rundeck-robot webhook url
 
-## Bearychat message example
+## BearyChat message example
 
 * on success
 
